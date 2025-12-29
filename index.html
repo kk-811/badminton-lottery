@@ -5,14 +5,23 @@
   <title>バドミントンくじ</title>
 </head>
 <body>
-  <h1>バドミントンダブルスくじ</h1>
+<h1>バドミントンダブルスくじ</h1>
 
+<!-- ① メンバー選択画面 -->
 <div id="member-selection">
   <h2>メンバーを選択してください</h2>
   <div id="member-list"></div>
   <button onclick="confirmMembers()">決定</button>
 </div>
 
+<!-- ② くじ引き画面（最初は非表示） -->
+<div id="lottery-screen" style="display:none;">
+  <h2>くじ引き</h2>
+  <p>名前をタップして番号を引いてください</p>
+  <div id="lottery-area"></div>
+</div>
+
 <script src="script.js"></script>
+
 </body>
 </html>
