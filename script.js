@@ -154,7 +154,6 @@ function generateMatches(n) {
   return matches;
 }
 
-const MATCH_TABLE = {};
 MATCH_TABLE[selectedMembers.length] =
   generateMatches(selectedMembers.length);
 
