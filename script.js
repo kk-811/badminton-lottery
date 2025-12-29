@@ -195,8 +195,9 @@ function startMatches() {
     return;
   }
 
-  // ★ ここが重要
-  MATCH_TABLE[n] = generateMatches(n);
+  // ★ ここを修正
+  matches = generateMatches(n);
+
   currentMatchIndex = 0;
 
   document.getElementById("lottery-screen").style.display = "none";
