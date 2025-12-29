@@ -26,3 +26,11 @@ body {
   transform: scale(0.95);
 }
 
+.card-name {
+  font-size: 18px;
+}
+
+.card-number {
+  font-size: 32px;
+  font-weight: bold;
+}
