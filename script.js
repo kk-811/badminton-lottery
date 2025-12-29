@@ -78,7 +78,7 @@ function createLotteryCards() {
 function updateTurnDisplay() {
   if (currentDrawerIndex < selectedMembers.length) {
     document.getElementById("turn-display").textContent =
-      "次に引く人：" + selectedMembers[currentDrawerIndex];
+      "くじ引く人：" + selectedMembers[currentDrawerIndex];
   }
 }
 
