@@ -200,7 +200,11 @@ function startMatches() {
   currentMatchIndex = 0;
 
   document.getElementById("lottery-screen").style.display = "none";
+  document.getElementById("lottery-screen").style.visibility = "hidden";
+
   document.getElementById("match-screen").style.display = "block";
+  document.getElementById("match-screen").style.visibility = "visible";
+
 
   // ★ 最初の試合を表示
   showMatch();
