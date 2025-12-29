@@ -1,6 +1,3 @@
-let currentDrawerIndex = 0; // 今引く人の順番
-
-// ===== 状態管理 =====
 const MEMBERS = [
   "田中", "佐藤", "鈴木", "高橋",
   "伊藤", "渡辺", "山本", "中村",
@@ -10,33 +7,35 @@ const MEMBERS = [
 let selectedMembers = [];
 let remainingNumbers = [];
 let assignedNumbers = {};
+let currentDrawerIndex = 0;
 
-// ===== 初期表示 =====
 window.onload = function () {
   const list = document.getElementById("member-list");
   list.innerHTML = "";
 
-  MEMBERS.forEach(name => {
+  for (let i = 0; i < MEMBERS.length; i++) {
     const label = document.createElement("label");
     label.style.display = "block";
 
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
-    checkbox.value = name;
+    checkbox.value = MEMBERS[i];
 
     label.appendChild(checkbox);
-    label.appendChild(document.createTextNode(" " + name));
+    label.appendChild(document.createTextNode(" " + MEMBERS[i]));
     list.appendChild(label);
-  });
+  }
 };
 
-// ===== メンバー決定 =====
 function confirmMembers() {
   const checked = document.querySelectorAll(
     '#member-list input[type="checkbox"]:checked'
   );
 
-  selectedMembers = Array.from(checked).map(c => c.value);
+  selectedMembers = [];
+  for (let i = 0; i < checked.length; i++) {
+    selectedMembers.push(checked[i].value);
+  }
 
   if (selectedMembers.length < 4) {
     alert("4人以上選んでください");
@@ -45,6 +44,7 @@ function confirmMembers() {
 
   remainingNumbers = [];
   assignedNumbers = {};
+  currentDrawerIndex = 0;
 
   for (let i = 1; i <= selectedMembers.length; i++) {
     remainingNumbers.push(i);
@@ -60,9 +60,7 @@ function createLotteryCards() {
   const area = document.getElementById("lottery-area");
   area.innerHTML = "";
 
-  currentDrawerIndex = 0;
-
-  remainingNumbers.forEach(() => {
+  for (let i = 0; i < remainingNumbers.length; i++) {
     const card = document.createElement("div");
     card.className = "lottery-card";
     card.textContent = "？";
@@ -75,19 +73,6 @@ function createLotteryCards() {
   }
 
   updateTurnDisplay();
-}
-
-
-// ===== 番号を引く =====
-function drawNumber(name, card) {
-  if (assignedNumbers[name]) return;
-
-  const idx = Math.floor(Math.random() * remainingNumbers.length);
-  const number = remainingNumbers.splice(idx, 1)[0];
-
-  assignedNumbers[name] = number;
-  card.textContent = number;
-  card.style.background = "#ffeaa7";
 }
 
 function updateTurnDisplay() {
