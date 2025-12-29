@@ -1,3 +1,5 @@
+let currentDrawerIndex = 0; // 今引く人の順番
+
 // ===== 状態管理 =====
 const MEMBERS = [
   "田中", "佐藤", "鈴木", "高橋",
