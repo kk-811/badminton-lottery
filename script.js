@@ -109,38 +109,6 @@ function getNameByNumber(num) {
   }
 }
 
-function showMatch() {
-  const n = selectedMembers.length;
-  const match = MATCH_TABLE[n][currentMatchIndex];
-
-  document.getElementById("teamA1").textContent = getNameByNumber(match[0]);
-  document.getElementById("teamA2").textContent = getNameByNumber(match[1]);
-  document.getElementById("teamB1").textContent = getNameByNumber(match[2]);
-  document.getElementById("teamB2").textContent = getNameByNumber(match[3]);
-}
-
-function nextMatch() {
-  if (currentMatchIndex < MATCH_TABLE[selectedMembers.length].length - 1) {
-    currentMatchIndex++;
-    showMatch();
-  }
-}
-
-function prevMatch() {
-  if (currentMatchIndex > 0) {
-    currentMatchIndex--;
-    showMatch();
-  }
-}
-
-function startMatches() {
-  document.getElementById("lottery-screen").style.display = "none";
-  document.getElementById("match-screen").style.display = "block";
-  currentMatchIndex = 0;
-  showMatch();
-}
-
-
 function generateMatches(n) {
   if (n < 4 || n > 10) {
     throw new Error("人数は4〜10人にしてください");
@@ -187,4 +155,37 @@ function generateMatches(n) {
 const MATCH_TABLE = {};
 MATCH_TABLE[selectedMembers.length] =
   generateMatches(selectedMembers.length);
+
+function showMatch() {
+  const n = selectedMembers.length;
+  const match = MATCH_TABLE[n][currentMatchIndex];
+
+  document.getElementById("teamA1").textContent = getNameByNumber(match[0]);
+  document.getElementById("teamA2").textContent = getNameByNumber(match[1]);
+  document.getElementById("teamB1").textContent = getNameByNumber(match[2]);
+  document.getElementById("teamB2").textContent = getNameByNumber(match[3]);
+}
+
+function nextMatch() {
+  if (currentMatchIndex < MATCH_TABLE[selectedMembers.length].length - 1) {
+    currentMatchIndex++;
+    showMatch();
+  }
+}
+
+function prevMatch() {
+  if (currentMatchIndex > 0) {
+    currentMatchIndex--;
+    showMatch();
+  }
+}
+
+function startMatches() {
+  document.getElementById("lottery-screen").style.display = "none";
+  document.getElementById("match-screen").style.display = "block";
+  currentMatchIndex = 0;
+  showMatch();
+}
+
+
 
