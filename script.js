@@ -112,49 +112,6 @@ function getNameByNumber(num) {
   }
 }
 
-function generateMatches(n) {
-  if (n < 4 || n > 10) {
-    throw new Error("人数は4〜10人にしてください");
-  }
-
-  const players = [];
-  for (let i = 1; i <= n; i++) {
-    players.push(i);
-  }
-
-  const playCount = Array(n).fill(0);
-  const restCount = Array(n).fill(0);
-
-  const matches = [];
-
-  // 1試合目は固定
-  matches.push([1, 2, 3, 4]);
-  for (let i = 0; i < 4; i++) playCount[i]++;
-
-  // 試合数の目安（全員がほぼ同じ回数出る）
-  const totalMatches = Math.ceil((n * 2) / 4);
-
-  for (let m = 1; m < totalMatches; m++) {
-    // 出場回数が少ない順にソート
-    const sorted = players
-      .slice()
-      .sort((a, b) => playCount[a - 1] - playCount[b - 1]);
-
-    const match = sorted.slice(0, 4);
-    matches.push(match);
-
-    for (let i = 0; i < n; i++) {
-      if (match.includes(i + 1)) {
-        playCount[i]++;
-      } else {
-        restCount[i]++;
-      }
-    }
-  }
-
-  return matches;
-}
-
 
 function showMatch() {
   const match = matches[currentMatchIndex];
@@ -205,3 +162,163 @@ function startMatches() {
 
   showMatch();
 }
+
+// ===== 試合制御 =====
+let currentMatchIndex = -1;
+let matchHistory = [];
+
+// 偏り管理
+let sideStats = {};
+let pairCount = {};
+
+// 初期化
+function initMatchStats(players) {
+  sideStats = {};
+  pairCount = {};
+
+  players.forEach(p => {
+    sideStats[p] = { left: 0, right: 0 };
+    pairCount[p] = {};
+    players.forEach(q => pairCount[p][q] = 0);
+  });
+
+  matchHistory = [];
+  currentMatchIndex = -1;
+}
+
+// ===============================
+// ① 試合列挙（最大100通り）
+// ===============================
+function enumerateMatches(players, maxPatterns = 100) {
+  const results = [];
+  const n = players.length;
+
+  for (let i = 0; i < n; i++) {
+    for (let j = i + 1; j < n; j++) {
+      for (let k = j + 1; k < n; k++) {
+        for (let l = k + 1; l < n; l++) {
+
+          const p = [players[i], players[j], players[k], players[l]];
+
+          const patterns = [
+            [p[0], p[1], p[2], p[3]],
+            [p[2], p[3], p[0], p[1]],
+
+            [p[0], p[2], p[1], p[3]],
+            [p[1], p[3], p[0], p[2]],
+
+            [p[0], p[3], p[1], p[2]],
+            [p[1], p[2], p[0], p[3]],
+          ];
+
+          for (const m of patterns) {
+            results.push(m);
+            if (results.length >= maxPatterns) return results;
+          }
+        }
+      }
+    }
+  }
+
+  return results;
+}
+
+// ===============================
+// ② スコア評価
+// ===============================
+function scoreMatch(match) {
+  let score = 0;
+
+  // 左右偏り
+  score += sideStats[match[0]].left;
+  score += sideStats[match[1]].left;
+  score += sideStats[match[2]].right;
+  score += sideStats[match[3]].right;
+
+  // ペア偏り（重め）
+  score += pairCount[match[0]][match[1]] * 5;
+  score += pairCount[match[2]][match[3]] * 5;
+
+  return score;
+}
+
+// ===============================
+// ③ 最適試合選択
+// ===============================
+function selectBestMatch(players) {
+  const candidates = enumerateMatches(players, 100);
+
+  let best = null;
+  let bestScore = Infinity;
+
+  for (const m of candidates) {
+    const s = scoreMatch(m);
+    if (s < bestScore) {
+      bestScore = s;
+      best = m;
+    }
+  }
+
+  return best;
+}
+
+// ===============================
+// ④ 試合反映
+// ===============================
+function applyMatch(match) {
+  sideStats[match[0]].left++;
+  sideStats[match[1]].left++;
+  sideStats[match[2]].right++;
+  sideStats[match[3]].right++;
+
+  pairCount[match[0]][match[1]]++;
+  pairCount[match[2]][match[3]]++;
+}
+
+// ===============================
+// ⑤ 表示
+// ===============================
+function displayMatch(match) {
+  document.getElementById("teamA1").textContent = match[0];
+  document.getElementById("teamA2").textContent = match[1];
+  document.getElementById("teamB1").textContent = match[2];
+  document.getElementById("teamB2").textContent = match[3];
+}
+
+// ===============================
+// ⑥ 試合開始
+// ===============================
+function startMatches() {
+  if (Object.keys(assignedNumbers).length !== selectedMembers.length) {
+    alert("全員くじを引いてください");
+    return;
+  }
+
+  initMatchStats(selectedMembers);
+
+  document.getElementById("lottery-screen").style.display = "none";
+  document.getElementById("match-screen").style.display = "block";
+
+  nextMatch();
+}
+
+// ===============================
+// ⑦ 次へ / 前へ
+// ===============================
+function nextMatch() {
+  const match = selectBestMatch(selectedMembers);
+  applyMatch(match);
+
+  matchHistory.push(match);
+  currentMatchIndex++;
+
+  displayMatch(match);
+}
+
+function prevMatch() {
+  if (currentMatchIndex <= 0) return;
+
+  currentMatchIndex--;
+  displayMatch(matchHistory[currentMatchIndex]);
+}
+
