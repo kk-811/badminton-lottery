@@ -63,7 +63,18 @@ function createLotteryCards() {
   selectedMembers.forEach(name => {
     const card = document.createElement("div");
     card.className = "lottery-card";
-    card.textContent = name;
+
+    // 名前表示
+    const nameDiv = document.createElement("div");
+    nameDiv.textContent = name;
+    nameDiv.className = "card-name";
+
+    // 番号表示（最初は空）
+    const numberDiv = document.createElement("div");
+    numberDiv.className = "card-number";
+
+    card.appendChild(nameDiv);
+    card.appendChild(numberDiv);
 
     card.onclick = function () {
       drawNumber(name, card);
@@ -73,15 +84,19 @@ function createLotteryCards() {
   });
 }
 
+
 function drawNumber(name, card) {
-  if (assignedNumbers[name]) return; // すでに引いている
+  if (assignedNumbers[name]) return;
 
   const idx = Math.floor(Math.random() * remainingNumbers.length);
   const number = remainingNumbers.splice(idx, 1)[0];
 
   assignedNumbers[name] = number;
 
-  card.textContent = number;
+  // 表示切り替え
+  card.querySelector(".card-name").style.display = "none";
+  card.querySelector(".card-number").textContent = number;
+
   card.style.background = "#ffeaa7";
 }
 
