@@ -133,6 +133,13 @@ function prevMatch() {
   }
 }
 
+function startMatches() {
+  document.getElementById("lottery-screen").style.display = "none";
+  document.getElementById("match-screen").style.display = "block";
+  currentMatchIndex = 0;
+  showMatch();
+}
+
 
 function generateMatches(n) {
   if (n < 4 || n > 10) {
