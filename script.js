@@ -184,15 +184,18 @@ function prevMatch() {
 }
 
 function startMatches() {
-  // まだ全員くじを引いていない
-  if (Object.keys(assignedNumbers).length !== selectedMembers.length) {
+  const n = selectedMembers.length;
+
+  if (n < 4 || n > 10) {
+    alert("メンバーを4〜10人選んでください");
+    return;
+  }
+
+  if (Object.keys(assignedNumbers).length !== n) {
     alert("全員くじを引いてから試合を開始してください");
     return;
   }
 
-  const n = selectedMembers.length;
-
-  // ★ ここで初めて試合表を作る
   const matches = generateMatches(n);
   MATCH_TABLE = {};
   MATCH_TABLE[n] = matches;
@@ -204,6 +207,7 @@ function startMatches() {
 
   showMatch();
 }
+
 
 
 
