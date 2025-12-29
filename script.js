@@ -1,3 +1,6 @@
+// テスト用：JSが読まれているか確認
+alert("script.js が読み込まれました");
+
 // 固定メンバー一覧
 const MEMBERS = [
   "田中", "佐藤", "鈴木", "高橋",
@@ -5,7 +8,7 @@ const MEMBERS = [
   "小林", "加藤"
 ];
 
-// ページ読み込み時に実行
+// ページ読み込み時
 window.onload = function () {
   const list = document.getElementById("member-list");
 
@@ -26,6 +29,8 @@ window.onload = function () {
 
 // 決定ボタン
 function confirmMembers() {
+  alert("confirmMembers が呼ばれました");
+
   const checked = document.querySelectorAll(
     '#member-list input[type="checkbox"]:checked'
   );
