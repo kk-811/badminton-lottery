@@ -242,6 +242,11 @@ function scoreMatch(match) {
   return score;
 }
 
+function sameMatch(a, b) {
+  if (!a || !b) return false;
+  return a.join(",") === b.join(",");
+}
+
 // ===============================
 // ③ 最適試合選択
 // ===============================
@@ -251,7 +256,13 @@ function selectBestMatch(players) {
   let best = null;
   let bestScore = Infinity;
 
+  const lastMatch = matchHistory[matchHistory.length - 1];
+
   for (const m of candidates) {
+
+    // ★ 直前と同じ組み合わせは除外
+    if (sameMatch(m, lastMatch)) continue;
+
     const s = scoreMatch(m);
     if (s < bestScore) {
       bestScore = s;
@@ -259,8 +270,9 @@ function selectBestMatch(players) {
     }
   }
 
-  return best;
+  return best || candidates[0];
 }
+
 
 // ===============================
 // ④ 試合反映
@@ -321,4 +333,3 @@ function prevMatch() {
   currentMatchIndex--;
   displayMatch(matchHistory[currentMatchIndex]);
 }
-
