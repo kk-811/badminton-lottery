@@ -1,3 +1,5 @@
+let remainingNumbers = [];
+let assignedNumbers = {};
 let selectedMembers = [];
 
 // 固定メンバー一覧
@@ -44,6 +46,14 @@ function confirmMembers() {
   document.getElementById("lottery-screen").style.display = "block";
 
   createLotteryCards();
+    // くじ番号を初期化
+  remainingNumbers = [];
+  assignedNumbers = {};
+
+  for (let i = 1; i <= selectedMembers.length; i++) {
+    remainingNumbers.push(i);
+  }
+
 }
 
 function createLotteryCards() {
@@ -55,7 +65,25 @@ function createLotteryCards() {
     card.className = "lottery-card";
     card.textContent = name;
 
+    card.onclick = function () {
+      drawNumber(name, card);
+    };
+
     area.appendChild(card);
   });
+}
+
+function drawNumber(name, card) {
+  if (assignedNumbers[name]) return; // すでに引いている
+
+  const idx = Math.floor(Math.random() * remainingNumbers.length);
+  const number = remainingNumbers.splice(idx, 1)[0];
+
+  assignedNumbers[name] = number;
+
+  card.textContent = number;
+  card.style.background = "#ffeaa7";
+}
+
 }
 
