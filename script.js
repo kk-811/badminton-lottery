@@ -154,18 +154,20 @@ function generateMatches(n) {
   return matches;
 }
 
-MATCH_TABLE[selectedMembers.length] =
-  generateMatches(selectedMembers.length);
 
 function showMatch() {
   const n = selectedMembers.length;
+  if (!MATCH_TABLE[n]) return;
+
   const match = MATCH_TABLE[n][currentMatchIndex];
+  if (!match) return;
 
   document.getElementById("teamA1").textContent = getNameByNumber(match[0]);
   document.getElementById("teamA2").textContent = getNameByNumber(match[1]);
   document.getElementById("teamB1").textContent = getNameByNumber(match[2]);
   document.getElementById("teamB2").textContent = getNameByNumber(match[3]);
 }
+
 
 function nextMatch() {
   if (currentMatchIndex < MATCH_TABLE[selectedMembers.length].length - 1) {
