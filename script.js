@@ -1,5 +1,4 @@
-// テスト用：JSが読まれているか確認
-alert("script.js が読み込まれました");
+let selectedMembers = [];
 
 // 固定メンバー一覧
 const MEMBERS = [
@@ -29,13 +28,34 @@ window.onload = function () {
 
 // 決定ボタン
 function confirmMembers() {
-  alert("confirmMembers が呼ばれました");
-
   const checked = document.querySelectorAll(
     '#member-list input[type="checkbox"]:checked'
   );
 
-  const selectedNames = Array.from(checked).map(c => c.value);
+  selectedMembers = Array.from(checked).map(c => c.value);
 
-  alert("選択されたメンバー:\n" + selectedNames.join(", "));
+  if (selectedMembers.length < 4) {
+    alert("4人以上選んでください");
+    return;
+  }
+
+  // 画面切り替え
+  document.getElementById("member-selection").style.display = "none";
+  document.getElementById("lottery-screen").style.display = "block";
+
+  createLotteryCards();
 }
+
+function createLotteryCards() {
+  const area = document.getElementById("lottery-area");
+  area.innerHTML = "";
+
+  selectedMembers.forEach(name => {
+    const card = document.createElement("div");
+    card.className = "lottery-card";
+    card.textContent = name;
+
+    area.appendChild(card);
+  });
+}
+
