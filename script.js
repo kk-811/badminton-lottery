@@ -100,3 +100,51 @@ function drawLottery(card) {
   currentDrawerIndex++;
   updateTurnDisplay();
 }
+
+function generateMatches(n) {
+  if (n < 4 || n > 10) {
+    throw new Error("人数は4〜10人にしてください");
+  }
+
+  const players = [];
+  for (let i = 1; i <= n; i++) {
+    players.push(i);
+  }
+
+  const playCount = Array(n).fill(0);
+  const restCount = Array(n).fill(0);
+
+  const matches = [];
+
+  // 1試合目は固定
+  matches.push([1, 2, 3, 4]);
+  for (let i = 0; i < 4; i++) playCount[i]++;
+
+  // 試合数の目安（全員がほぼ同じ回数出る）
+  const totalMatches = Math.ceil((n * 2) / 4);
+
+  for (let m = 1; m < totalMatches; m++) {
+    // 出場回数が少ない順にソート
+    const sorted = players
+      .slice()
+      .sort((a, b) => playCount[a - 1] - playCount[b - 1]);
+
+    const match = sorted.slice(0, 4);
+    matches.push(match);
+
+    for (let i = 0; i < n; i++) {
+      if (match.includes(i + 1)) {
+        playCount[i]++;
+      } else {
+        restCount[i]++;
+      }
+    }
+  }
+
+  return matches;
+}
+
+const MATCH_TABLE = {};
+MATCH_TABLE[selectedMembers.length] =
+  generateMatches(selectedMembers.length);
+
