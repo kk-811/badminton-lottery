@@ -56,23 +56,27 @@ function confirmMembers() {
   createLotteryCards();
 }
 
-// ===== くじカード作成 =====
 function createLotteryCards() {
   const area = document.getElementById("lottery-area");
   area.innerHTML = "";
 
-  selectedMembers.forEach(name => {
+  currentDrawerIndex = 0;
+
+  remainingNumbers.forEach(() => {
     const card = document.createElement("div");
     card.className = "lottery-card";
-    card.textContent = name;
+    card.textContent = "？";
 
     card.onclick = function () {
-      drawNumber(name, card);
+      drawLottery(card);
     };
 
     area.appendChild(card);
-  });
+  }
+
+  updateTurnDisplay();
 }
+
 
 // ===== 番号を引く =====
 function drawNumber(name, card) {
