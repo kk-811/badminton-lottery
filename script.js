@@ -10,7 +10,8 @@ let selectedMembers = [];
 let remainingNumbers = [];
 let assignedNumbers = {};
 let currentDrawerIndex = 0;
-let MATCH_TABLE = {};
+let matches = [];
+
 
 
 window.onload = function () {
@@ -156,10 +157,7 @@ function generateMatches(n) {
 
 
 function showMatch() {
-  const n = selectedMembers.length;
-  if (!MATCH_TABLE[n]) return;
-
-  const match = MATCH_TABLE[n][currentMatchIndex];
+  const match = matches[currentMatchIndex];
   if (!match) return;
 
   document.getElementById("teamA1").textContent = getNameByNumber(match[0]);
@@ -169,8 +167,9 @@ function showMatch() {
 }
 
 
+
 function nextMatch() {
-  if (currentMatchIndex < MATCH_TABLE[selectedMembers.length].length - 1) {
+  if (currentMatchIndex < matches.length - 1) {
     currentMatchIndex++;
     showMatch();
   }
@@ -185,20 +184,28 @@ function prevMatch() {
 
 function startMatches() {
   const n = selectedMembers.length;
+
   if (n < 4 || n > 10) {
     alert("人数は4〜10人にしてください");
     return;
   }
 
-  // ★ここ
-  MATCH_TABLE[n] = generateMatches(n);
+  if (Object.keys(assignedNumbers).length !== n) {
+    alert("全員くじを引いてから試合を開始してください");
+    return;
+  }
+
+  // ★ 対戦表をここで作る
+  matches = generateMatches(n);
   currentMatchIndex = 0;
 
   document.getElementById("lottery-screen").style.display = "none";
   document.getElementById("match-screen").style.display = "block";
 
+  // ★ 最初の試合を表示
   showMatch();
 }
+
 
 
 
