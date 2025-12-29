@@ -10,6 +10,8 @@ let selectedMembers = [];
 let remainingNumbers = [];
 let assignedNumbers = {};
 let currentDrawerIndex = 0;
+let MATCH_TABLE = {};
+
 
 window.onload = function () {
   const list = document.getElementById("member-list");
@@ -181,11 +183,28 @@ function prevMatch() {
 }
 
 function startMatches() {
+  // まだ全員くじを引いていない
+  if (Object.keys(assignedNumbers).length !== selectedMembers.length) {
+    alert("全員くじを引いてから試合を開始してください");
+    return;
+  }
+
+  const n = selectedMembers.length;
+
+  // ★ ここで初めて試合表を作る
+  const matches = generateMatches(n);
+
+  MATCH_TABLE = {};
+  MATCH_TABLE[n] = matches;
+
+  currentMatchIndex = 0;
+
   document.getElementById("lottery-screen").style.display = "none";
   document.getElementById("match-screen").style.display = "block";
-  currentMatchIndex = 0;
+
   showMatch();
 }
+
 
 
 
