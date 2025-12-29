@@ -17,3 +17,12 @@ body {
   cursor: pointer;
   font-size: 16px;
 }
+
+.lottery-card {
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.lottery-card:active {
+  transform: scale(0.95);
+}
+
