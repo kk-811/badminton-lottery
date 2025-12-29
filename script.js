@@ -89,3 +89,29 @@ function drawNumber(name, card) {
   card.textContent = number;
   card.style.background = "#ffeaa7";
 }
+
+function updateTurnDisplay() {
+  if (currentDrawerIndex < selectedMembers.length) {
+    document.getElementById("turn-display").textContent =
+      `次に引く人：${selectedMembers[currentDrawerIndex]}`;
+  }
+}
+
+function drawLottery(card) {
+  if (card.classList.contains("used")) return;
+  if (currentDrawerIndex >= selectedMembers.length) return;
+
+  const name = selectedMembers[currentDrawerIndex];
+
+  const idx = Math.floor(Math.random() * remainingNumbers.length);
+  const number = remainingNumbers.splice(idx, 1)[0];
+
+  assignedNumbers[name] = number;
+
+  card.textContent = `${name}\n${number}`;
+  card.classList.add("used");
+  card.style.background = "#ffeaa7";
+
+  currentDrawerIndex++;
+  updateTurnDisplay();
+}
