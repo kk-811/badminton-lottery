@@ -184,24 +184,22 @@ function prevMatch() {
 }
 
 function startMatches() {
-  // ① 人数チェック（安全）
   const n = selectedMembers.length;
   if (n < 4 || n > 10) {
     alert("人数は4〜10人にしてください");
     return;
   }
 
-  // ② 対戦表生成
-  matches = generateMatches(n);
+  // ★ここ
+  MATCH_TABLE[n] = generateMatches(n);
   currentMatchIndex = 0;
 
-  // ③ 画面切り替え
   document.getElementById("lottery-screen").style.display = "none";
   document.getElementById("match-screen").style.display = "block";
 
-  // ④ ★最初の試合を表示（← これが無いと何も出ない）
-  showMatch(currentMatchIndex);
+  showMatch();
 }
+
 
 
 
