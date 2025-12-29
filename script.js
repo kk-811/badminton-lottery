@@ -191,29 +191,16 @@ function startMatches() {
   }
 
   if (Object.keys(assignedNumbers).length !== n) {
-    alert("全員くじを引いてから試合を開始してください");
+    alert("全員くじを引いてください");
     return;
   }
 
-  // ★ 対戦表をここで作る
-  matches = generateMatches(n);
+  // ★ ここが重要
+  MATCH_TABLE[n] = generateMatches(n);
   currentMatchIndex = 0;
 
   document.getElementById("lottery-screen").style.display = "none";
-  document.getElementById("lottery-screen").style.visibility = "hidden";
-
   document.getElementById("match-screen").style.display = "block";
-  document.getElementById("match-screen").style.visibility = "visible";
 
-
-  // ★ 最初の試合を表示
   showMatch();
 }
-
-
-
-
-
-
-
-
