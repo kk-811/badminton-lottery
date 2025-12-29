@@ -21,6 +21,25 @@
   <p>名前をタップして番号を引いてください</p>
   <div id="lottery-area"></div>
   <p id="turn-display"></p>
+  <div id="match-screen" style="display:none;">
+  <h2>試合</h2>
+
+  <div id="court">
+    <div class="team">
+      <p id="teamA1"></p>
+      <p id="teamA2"></p>
+    </div>
+
+    <div class="team">
+      <p id="teamB1"></p>
+      <p id="teamB2"></p>
+    </div>
+  </div>
+
+  <button onclick="prevMatch()">前へ</button>
+  <button onclick="nextMatch()">次へ</button>
+</div>
+
 </div>
 
 <script src="script.js"></script>
