@@ -1,3 +1,5 @@
+let currentMatchIndex = 0;
+
 const MEMBERS = [
   "田中", "佐藤", "鈴木", "高橋",
   "伊藤", "渡辺", "山本", "中村",
@@ -100,6 +102,37 @@ function drawLottery(card) {
   currentDrawerIndex++;
   updateTurnDisplay();
 }
+
+function getNameByNumber(num) {
+  for (const name in assignedNumbers) {
+    if (assignedNumbers[name] === num) return name;
+  }
+}
+
+function showMatch() {
+  const n = selectedMembers.length;
+  const match = MATCH_TABLE[n][currentMatchIndex];
+
+  document.getElementById("teamA1").textContent = getNameByNumber(match[0]);
+  document.getElementById("teamA2").textContent = getNameByNumber(match[1]);
+  document.getElementById("teamB1").textContent = getNameByNumber(match[2]);
+  document.getElementById("teamB2").textContent = getNameByNumber(match[3]);
+}
+
+function nextMatch() {
+  if (currentMatchIndex < MATCH_TABLE[selectedMembers.length].length - 1) {
+    currentMatchIndex++;
+    showMatch();
+  }
+}
+
+function prevMatch() {
+  if (currentMatchIndex > 0) {
+    currentMatchIndex--;
+    showMatch();
+  }
+}
+
 
 function generateMatches(n) {
   if (n < 4 || n > 10) {
