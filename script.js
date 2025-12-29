@@ -93,7 +93,7 @@ function drawNumber(name, card) {
 function updateTurnDisplay() {
   if (currentDrawerIndex < selectedMembers.length) {
     document.getElementById("turn-display").textContent =
-      `次に引く人：${selectedMembers[currentDrawerIndex]}`;
+      "次に引く人：" + selectedMembers[currentDrawerIndex];
   }
 }
 
@@ -108,7 +108,7 @@ function drawLottery(card) {
 
   assignedNumbers[name] = number;
 
-  card.textContent = `${name}\n${number}`;
+  card.textContent = name + "\n" + number;
   card.classList.add("used");
   card.style.background = "#ffeaa7";
 
