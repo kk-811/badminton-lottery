@@ -192,7 +192,7 @@ function startMatches() {
 
   // ★ ここで初めて試合表を作る
   const matches = generateMatches(n);
-
+  MATCH_TABLE = {};
   MATCH_TABLE[n] = matches;
 
   currentMatchIndex = 0;
